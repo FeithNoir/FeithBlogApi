@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Core;
+using Core.Models;
 
 namespace Data
 {
@@ -14,5 +14,6 @@ namespace Data
         public DbSet<Artwork> Artworks { get; set; }
         public DbSet<Exhibition> Exhibitions { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
