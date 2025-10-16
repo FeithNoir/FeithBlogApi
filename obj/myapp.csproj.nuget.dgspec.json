@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/build/myapp/myapp.csproj": {}
+    "/home/user/feithblogapi/myapp.csproj": {}
   },
   "projects": {
-    "/build/myapp/myapp.csproj": {
+    "/home/user/feithblogapi/myapp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/build/myapp/myapp.csproj",
+        "projectUniqueName": "/home/user/feithblogapi/myapp.csproj",
         "projectName": "myapp",
-        "projectPath": "/build/myapp/myapp.csproj",
+        "projectPath": "/home/user/feithblogapi/myapp.csproj",
         "packagesPath": "/home/user/.nuget/packages/",
-        "outputPath": "/build/myapp/obj/",
+        "outputPath": "/home/user/feithblogapi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/user/.nuget/NuGet/NuGet.Config"
@@ -43,6 +43,26 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
