@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+
+//I will add the services classes here
+using Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +42,11 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
+
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 // Configure database connection
@@ -55,8 +64,12 @@ else
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 
-
+// Register repositories and services
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<ArtistService>();
+builder.Services.AddScoped<ArtworkService>();
+builder.Services.AddScoped<ExhibitionService>();
+builder.Services.AddScoped<PostService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

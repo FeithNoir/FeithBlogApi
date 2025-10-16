@@ -1,45 +1,88 @@
-### Overview
-This project is a .NET Core Web API for a blog. It includes authentication with JWT and will eventually have endpoints for managing blog posts, artists, artworks, and exhibitions.
+# Feith Blog API
 
-### Project Structure
-*   `Api/Controllers`: Contains API controllers.
-*   `Business/Repositories`: Contains data access logic.
-*   `Core/Models`: Contains data models and DTOs.
-*   `Data`: Contains the Entity Framework Core `DbContext` and migrations.
-*   `Views`: Contains Razor views (for potential future web UI).
-*   `wwwroot`: Contains static assets.
+Welcome to the Feith Blog API, a .NET 8 backend service designed to manage artists, artworks, and exhibitions. This API provides a complete set of endpoints for CRUD (Create, Read, Update, Delete) operations and includes JWT-based authentication for securing data.
 
-### Implemented Features & Design
-*   **Authentication:**
-    *   JWT-based authentication.
-    *   `AuthController` with `register` and `login` endpoints.
-    *   `AuthRepository` for user registration and login logic.
-    *   Password hashing using HMACSHA512.
-*   **Database:**
-    *   Entity Framework Core with SQLite for local development.
-    *   `BlogContext` as the `DbContext`.
-*   **API:**
-    *   Swagger/OpenAPI documentation.
-    *   CORS enabled to allow all origins.
+The project is built following modern .NET best practices, including a clean architecture with a clear separation of concerns, dependency injection, and user secrets for configuration.
 
-### Current Task: Initial Setup and Authentication
+## Features
 
-**Plan:**
-1.  **DONE** Install NuGet packages:
-    *   `FirebaseDatabase.net`
-    *   `Microsoft.AspNetCore.Authentication.JwtBearer`
-    *   `Swashbuckle.AspNetCore` (already installed)
-2.  **DONE** Configure `Program.cs`:
-    *   Add JWT authentication.
-    *   Add Swagger configuration for JWT.
-    *   Add CORS policy.
-    *   Add Firebase configuration placeholder.
-3.  **DONE** Configure `appsettings.json`:
-    *   Add `AppSettings:Token` for the JWT secret key.
-    *   Add `Firebase` configuration section.
-4.  **DONE** Create `AuthController.cs` in `Api/Controllers`.
-5.  **DONE** Update `IAuthRepository.cs` and `AuthRepository.cs`.
-    *   Implement `Register` and `Login` methods with `ServiceResponse`.
-    *   Implement JWT generation.
-6.  **DONE** Create `ServiceResponse.cs` model.
-7.  **DONE** Create and update `blueprint.md`.
+- **.NET 8:** Built on the latest long-term support version of .NET.
+- **RESTful API:** A complete set of endpoints for managing artists, artworks, and exhibitions.
+- **Authentication & Authorization:** Secure endpoints using JSON Web Tokens (JWT).
+- **Swagger/OpenAPI Documentation:** Interactive API documentation for easy testing and exploration.
+- **Entity Framework Core:** Data access is handled via EF Core with a SQLite database for local development.
+- **Clean Architecture:** The solution is structured into three projects:
+  - `Api`: The presentation layer, containing controllers.
+  - `Business`: The business logic layer, with services and repositories.
+  - `Data`: The data access layer, containing the database context and entities.
+
+## Getting Started
+
+### Prerequisites
+
+To run this project locally, you will need:
+
+1.  **[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)**
+2.  **(Optional) Docker Desktop:** If you prefer to run the application in a container.
+
+### Installation & Running
+
+You can run the application either directly with the .NET SDK or using Docker.
+
+#### Method 1: Running with the .NET SDK (Recommended for Development)
+
+1.  **Clone the Repository**
+
+    ```bash
+    git clone <your-repository-url>
+    cd feithblogapi
+    ```
+
+2.  **Set Up User Secrets**
+
+    The application uses a secret key to sign JWT tokens. This key is not stored in the repository for security reasons. You must configure it using the .NET Secret Manager.
+
+    Run the following command in the root directory:
+    ```bash
+    dotnet user-secrets set "AppSettings:Token" "your-super-secret-key-that-is-long-and-secure"
+    ```
+    *You can replace the example key with any long, random string.*
+
+3.  **Run the Application**
+
+    ```bash
+    dotnet run
+    ```
+
+4.  **Access the API**
+
+    The API will be running and listening on **`http://localhost:3000`**.
+
+    To explore and test the endpoints, navigate to the Swagger UI documentation at:
+    [**http://localhost:3000/swagger**](http://localhost:3000/swagger)
+
+#### Method 2: Running with Docker
+
+The project includes a `Dockerfile` and a `docker-compose.yml` for easy containerization.
+
+1.  **Clone the Repository**
+
+    ```bash
+    git clone <your-repository-url>
+    cd feithblogapi
+    ```
+
+2.  **Build and Run with Docker Compose**
+
+    This single command will build the Docker image and start the container.
+    ```bash
+    docker compose up --build
+    ```
+
+3.  **Access the API**
+
+    The API will be running inside the container and exposed on **`http://localhost:8081`**.
+
+    To explore and test the endpoints, navigate to the Swagger UI documentation at:
+    [**http://localhost:8081/swagger**](http://localhost:8081/swagger)
+
