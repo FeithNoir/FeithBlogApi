@@ -1,61 +1,40 @@
-using Business.Repositories;
+using Business.Services;
 using Core.DTOs;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace myapp.Api.Controllers
+namespace Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly AuthService _authService;
 
-        public AuthController(IAuthRepository authRepository)
+        public AuthController(AuthService authService)
         {
-            _authRepository = authRepository;
+            _authService = authService;
         }
 
-        /// <summary>
-        /// Registers a new user.
-        /// </summary>
-        /// <param name="userForRegisterDto">The user registration information.</param>
-        /// <returns>A response indicating success or failure.</returns>
-        /// <response code="200">If the user is registered successfully.</response>
-        /// <response code="400">If the registration fails.</response>
         [HttpPost("register")]
-        [ProducesResponseType(typeof(ServiceResponse<int>), 200)]
-        [ProducesResponseType(typeof(ServiceResponse<int>), 400)]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
+        public async Task<ActionResult<Artist>> Register(Artist artist)
         {
-            var user = new User { Username = userForRegisterDto.Username };
-            var response = await _authRepository.Register(user, userForRegisterDto.Password);
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
+            var createdArtist = await _authService.Register(artist);
+            return CreatedAtAction(nameof(Register), new { id = createdArtist.Id }, createdArtist);
         }
 
-        /// <summary>
-        /// Logs in a user.
-        /// </summary>
-        /// <param name="userForLoginDto">The user login information.</param>
-        /// <returns>A JWT token if login is successful.</returns>
-        /// <response code="200">Returns a JWT token.</response>
-        /// <response code="401">If the login is unsuccessful.</response>
         [HttpPost("login")]
-        [ProducesResponseType(typeof(ServiceResponse<string>), 200)]
-        [ProducesResponseType(typeof(ServiceResponse<string>), 401)]
-        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        public async Task<ActionResult<string>> Login(LoginRequest loginRequest)
         {
-            var response = await _authRepository.Login(userForLoginDto.Username, userForLoginDto.Password);
-            if (!response.Success)
+            var token = await _authService.Login(loginRequest.Username, loginRequest.Password);
+
+            if (token == null)
             {
-                return Unauthorized(response);
+                return Unauthorized();
             }
-            return Ok(response);
+
+            return Ok(token);
         }
     }
 }

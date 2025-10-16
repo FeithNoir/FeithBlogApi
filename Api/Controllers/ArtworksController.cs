@@ -1,5 +1,7 @@
 using Business;
 using Core.DTOs;
+using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ArtworksController : ControllerBase
     {
         private readonly ArtworkService _artworkService;
@@ -17,37 +20,45 @@ namespace Api.Controllers
             _artworkService = artworkService;
         }
 
-        /// <summary>
-        /// Gets a list of all artworks.
-        /// </summary>
-        /// <returns>A list of artworks.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ArtworkDto>), 200)]
+        [AllowAnonymous]
         public async Task<IEnumerable<ArtworkDto>> Get()
         {
             return await _artworkService.GetArtworks();
         }
 
-        /// <summary>
-        /// Gets a specific artwork by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the artwork.</param>
-        /// <returns>The requested artwork.</returns>
-        /// <response code="200">Returns the requested artwork.</response>
-        /// <response code="404">If the artwork is not found.</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ArtworkDto), 200)]
-        [ProducesResponseType(404)]
+        [AllowAnonymous]
         public async Task<ActionResult<ArtworkDto>> Get(int id)
         {
             var artwork = await _artworkService.GetArtwork(id);
-
-            if (artwork == null)
-            {
-                return NotFound();
-            }
-
+            if (artwork == null) return NotFound();
             return artwork;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Artwork>> Post(Artwork artwork)
+        {            
+            await _artworkService.CreateArtwork(artwork);
+            return CreatedAtAction(nameof(Get), new { id = artwork.Id }, artwork);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Artwork artwork)
+        {
+            if (id != artwork.Id)
+            {
+                return BadRequest();
+            }
+            await _artworkService.UpdateArtwork(id, artwork);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _artworkService.DeleteArtwork(id);
+            return NoContent();
         }
     }
 }

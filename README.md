@@ -1,88 +1,52 @@
-# Feith Blog API
+# Feith Blog: Full-Stack Application
 
-Welcome to the Feith Blog API, a .NET 8 backend service designed to manage artists, artworks, and exhibitions. This API provides a complete set of endpoints for CRUD (Create, Read, Update, Delete) operations and includes JWT-based authentication for securing data.
+Welcome to the Feith Blog, a full-stack web application built with a .NET 8 backend and a Vue.js frontend. This project is designed to provide a modern, performant, and secure platform for artists to create and manage their blog posts.
 
-The project is built following modern .NET best practices, including a clean architecture with a clear separation of concerns, dependency injection, and user secrets for configuration.
+The application follows a clean architecture with a strong separation of concerns, uses JWT-based authentication, and leverages Entity Framework Core for data persistence.
 
 ## Features
 
-- **.NET 8:** Built on the latest long-term support version of .NET.
-- **RESTful API:** A complete set of endpoints for managing artists, artworks, and exhibitions.
-- **Authentication & Authorization:** Secure endpoints using JSON Web Tokens (JWT).
-- **Swagger/OpenAPI Documentation:** Interactive API documentation for easy testing and exploration.
-- **Entity Framework Core:** Data access is handled via EF Core with a SQLite database for local development.
-- **Clean Architecture:** The solution is structured into three projects:
-  - `Api`: The presentation layer, containing controllers.
-  - `Business`: The business logic layer, with services and repositories.
-  - `Data`: The data access layer, containing the database context and entities.
+- **Full-Stack Solution:** A complete web application with a .NET backend and a Vue.js frontend.
+- **.NET 8 Backend:** Built on the latest long-term support version of .NET, providing a robust and scalable foundation.
+- **Vue.js Frontend:** A reactive and modern user interface for a seamless user experience.
+- **RESTful API:** A comprehensive set of API endpoints for managing blog posts.
+- **Authentication & Authorization:** Secure endpoints using JSON Web Tokens (JWT) to ensure that only authenticated artists can create or modify posts.
+- **Entity Framework Core:** Data access is managed through EF Core with a SQLite database for local development.
+- **Clean Architecture:** The solution is structured into distinct layers:
+  - `Api`: The presentation layer, containing API controllers.
+  - `Business`: The application layer, holding business logic and services.
+  - `Core`: The domain layer, containing core entities, DTOs, and models.
+  - `Data`: The infrastructure layer, managing data access with EF Core.
 
 ## Getting Started
 
 ### Prerequisites
 
-To run this project locally, you will need:
+To run this project, you will need the **.NET 8 SDK**, which is pre-installed in this development environment.
 
-1.  **[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)**
-2.  **(Optional) Docker Desktop:** If you prefer to run the application in a container.
+### Running the Application
 
-### Installation & Running
+1.  **Set Up User Secrets**
 
-You can run the application either directly with the .NET SDK or using Docker.
+    The application uses a secret key to sign JWT tokens. This key is not stored in the repository for security. To run the application, you must first configure the secret key.
 
-#### Method 1: Running with the .NET SDK (Recommended for Development)
-
-1.  **Clone the Repository**
-
+    Execute the following command in the terminal:
     ```bash
-    git clone <your-repository-url>
-    cd feithblogapi
+    dotnet user-secrets set "Jwt:Key" "your-super-secret-key-that-is-long-and-secure-enough"
+    dotnet user-secrets set "Jwt:Issuer" "your-issuer"
+    dotnet user-secrets set "Jwt:Audience" "your-audience"
     ```
+    *You can replace the example values with your own secure key, issuer, and audience.*
 
-2.  **Set Up User Secrets**
+2.  **Run the Dev Server**
 
-    The application uses a secret key to sign JWT tokens. This key is not stored in the repository for security reasons. You must configure it using the .NET Secret Manager.
-
-    Run the following command in the root directory:
+    To start both the backend and frontend, simply run the following command:
     ```bash
-    dotnet user-secrets set "AppSettings:Token" "your-super-secret-key-that-is-long-and-secure"
+    dotnet watch
     ```
-    *You can replace the example key with any long, random string.*
+    This command will build the application, start the web server, and automatically watch for any file changes.
 
-3.  **Run the Application**
+3.  **Access the Application**
 
-    ```bash
-    dotnet run
-    ```
-
-4.  **Access the API**
-
-    The API will be running and listening on **`http://localhost:3000`**.
-
-    To explore and test the endpoints, navigate to the Swagger UI documentation at:
-    [**http://localhost:3000/swagger**](http://localhost:3000/swagger)
-
-#### Method 2: Running with Docker
-
-The project includes a `Dockerfile` and a `docker-compose.yml` for easy containerization.
-
-1.  **Clone the Repository**
-
-    ```bash
-    git clone <your-repository-url>
-    cd feithblogapi
-    ```
-
-2.  **Build and Run with Docker Compose**
-
-    This single command will build the Docker image and start the container.
-    ```bash
-    docker compose up --build
-    ```
-
-3.  **Access the API**
-
-    The API will be running inside the container and exposed on **`http://localhost:8081`**.
-
-    To explore and test the endpoints, navigate to the Swagger UI documentation at:
-    [**http://localhost:8081/swagger**](http://localhost:8081/swagger)
+    Once the server is running, the web application will be available in the **Web Preview** tab in your IDE. You can access it directly to view and interact with the blog.
 

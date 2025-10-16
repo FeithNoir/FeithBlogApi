@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Data;
-using Business.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -9,6 +8,7 @@ using System.Reflection;
 
 //I will add the services classes here
 using Business;
+using Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,7 +65,7 @@ else
 }
 
 // Register repositories and services
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ArtistService>();
 builder.Services.AddScoped<ArtworkService>();
 builder.Services.AddScoped<ExhibitionService>();

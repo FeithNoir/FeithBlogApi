@@ -1,5 +1,7 @@
 using Business;
 using Core.DTOs;
+using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize] // Protect all endpoints in this controller
     public class ArtistsController : ControllerBase
     {
         private readonly ArtistService _artistService;
@@ -17,37 +20,45 @@ namespace Api.Controllers
             _artistService = artistService;
         }
 
-        /// <summary>
-        /// Gets a list of all artists.
-        /// </summary>
-        /// <returns>A list of artists.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ArtistDto>), 200)]
+        [AllowAnonymous] // You might want to allow anonymous access to the list
         public async Task<IEnumerable<ArtistDto>> Get()
         {
             return await _artistService.GetArtists();
         }
 
-        /// <summary>
-        /// Gets a specific artist by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the artist.</param>
-        /// <returns>The requested artist.</returns>
-        /// <response code="200">Returns the requested artist.</response>
-        /// <response code="404">If the artist is not found.</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ArtistDto), 200)]
-        [ProducesResponseType(404)]
+        [AllowAnonymous] // And to individual artists
         public async Task<ActionResult<ArtistDto>> Get(int id)
         {
             var artist = await _artistService.GetArtist(id);
-
-            if (artist == null)
-            {
-                return NotFound();
-            }
-
+            if (artist == null) return NotFound();
             return artist;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Artist>> Post(Artist artist)
+        {
+            await _artistService.CreateArtist(artist);
+            return CreatedAtAction(nameof(Get), new { id = artist.Id }, artist);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Artist artist)
+        {
+            if (id != artist.Id)
+            {
+                return BadRequest();
+            }
+            await _artistService.UpdateArtist(id, artist);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _artistService.DeleteArtist(id);
+            return NoContent();
         }
     }
 }

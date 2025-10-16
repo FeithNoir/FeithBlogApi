@@ -1,5 +1,7 @@
 using Business;
 using Core.DTOs;
+using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ExhibitionsController : ControllerBase
     {
         private readonly ExhibitionService _exhibitionService;
@@ -17,37 +20,45 @@ namespace Api.Controllers
             _exhibitionService = exhibitionService;
         }
 
-        /// <summary>
-        /// Gets a list of all exhibitions.
-        /// </summary>
-        /// <returns>A list of exhibitions.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ExhibitionDto>), 200)]
+        [AllowAnonymous]
         public async Task<IEnumerable<ExhibitionDto>> Get()
         {
             return await _exhibitionService.GetExhibitions();
         }
 
-        /// <summary>
-        /// Gets a specific exhibition by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the exhibition.</param>
-        /// <returns>The requested exhibition.</returns>
-        /// <response code="200">Returns the requested exhibition.</response>
-        /// <response code="404">If the exhibition is not found.</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ExhibitionDto), 200)]
-        [ProducesResponseType(404)]
+        [AllowAnonymous]
         public async Task<ActionResult<ExhibitionDto>> Get(int id)
         {
             var exhibition = await _exhibitionService.GetExhibition(id);
-
-            if (exhibition == null)
-            {
-                return NotFound();
-            }
-
+            if (exhibition == null) return NotFound();
             return exhibition;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Exhibition>> Post(Exhibition exhibition)
+        {
+            await _exhibitionService.CreateExhibition(exhibition);
+            return CreatedAtAction(nameof(Get), new { id = exhibition.Id }, exhibition);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Exhibition exhibition)
+        {
+            if (id != exhibition.Id)
+            {
+                return BadRequest();
+            }
+            await _exhibitionService.UpdateExhibition(id, exhibition);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _exhibitionService.DeleteExhibition(id);
+            return NoContent();
         }
     }
 }

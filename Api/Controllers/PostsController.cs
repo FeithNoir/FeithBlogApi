@@ -1,5 +1,6 @@
 using Business;
 using Core.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,28 +18,14 @@ namespace Api.Controllers
             _postService = postService;
         }
 
-        /// <summary>
-        /// Gets a list of all posts.
-        /// </summary>
-        /// <returns>A list of posts.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<PostDto>), 200)]
-        public async Task<IEnumerable<PostDto>> Get()
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetPosts()
         {
-            return await _postService.GetPosts();
+            return Ok(await _postService.GetPosts());
         }
 
-        /// <summary>
-        /// Gets a specific post by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the post.</param>
-        /// <returns>The requested post.</returns>
-        /// <response code="200">Returns the requested post.</response>
-        /// <response code="404">If the post is not found.</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(PostDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<PostDto>> Get(int id)
+        public async Task<ActionResult<PostDto>> GetPost(int id)
         {
             var post = await _postService.GetPost(id);
 
@@ -47,7 +34,31 @@ namespace Api.Controllers
                 return NotFound();
             }
 
-            return post;
+            return Ok(post);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<PostDto>> CreatePost(PostDto postDto)
+        {
+            var newPost = await _postService.CreatePost(postDto);
+            return CreatedAtAction(nameof(GetPost), new { id = newPost.Id }, newPost);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePost(int id, PostDto postDto)
+        {            
+            await _postService.UpdatePost(id, postDto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await _postService.DeletePost(id);
+            return NoContent();
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Core.Models
 {
     public class Artwork
@@ -11,5 +9,6 @@ namespace Core.Models
         public DateTime CreationDate { get; set; }
         public int ArtistId { get; set; }
         public Artist Artist { get; set; } = null!;
+        public bool IsDeleted { get; set; } = false;
     }
 }

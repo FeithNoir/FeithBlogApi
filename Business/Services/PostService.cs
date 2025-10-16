@@ -1,6 +1,7 @@
 
 using Core;
 using Core.DTOs;
+using Core.Models;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -21,12 +22,13 @@ namespace Business
         public async Task<IEnumerable<PostDto>> GetPosts()
         {
             return await _context.Posts
+                .Where(p => !p.IsDeleted)
                 .Select(p => new PostDto
                 {
                     Id = p.Id,
                     Title = p.Title,
                     Content = p.Content,
-                    PublishedDate = p.PublishedDate,
+                    PublishedAt = p.PublishedAt,
                     ArtistId = p.ArtistId
                 })
                 .ToListAsync();
@@ -34,21 +36,60 @@ namespace Business
 
         public async Task<PostDto?> GetPost(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts
+                .Where(p => !p.IsDeleted && p.Id == id)
+                .Select(p => new PostDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content,
+                    PublishedAt = p.PublishedAt,
+                    ArtistId = p.ArtistId
+                })
+                .FirstOrDefaultAsync();
 
-            if (post == null)
+            return post;
+        }
+
+        public async Task<Post> CreatePost(PostDto postDto)
+        {
+            var post = new Post
             {
-                return null;
+                Title = postDto.Title,
+                Content = postDto.Content,
+                PublishedAt = postDto.PublishedAt,
+                ArtistId = postDto.ArtistId
+            };
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
+        public async Task UpdatePost(int id, PostDto postDto)
+        {
+            var existingPost = await _context.Posts.FindAsync(id);
+            if (existingPost == null || existingPost.IsDeleted)
+            {
+                return;
             }
 
-            return new PostDto
+            existingPost.Title = postDto.Title;
+            existingPost.Content = postDto.Content;
+            existingPost.PublishedAt = postDto.PublishedAt;
+            existingPost.ArtistId = postDto.ArtistId;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeletePost(int id)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post != null)
             {
-                Id = post.Id,
-                Title = post.Title,
-                Content = post.Content,
-                PublishedDate = post.PublishedDate,
-                ArtistId = post.ArtistId
-            };
+                post.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

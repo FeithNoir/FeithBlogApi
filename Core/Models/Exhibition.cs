@@ -1,5 +1,3 @@
-using System;
-
 namespace Core.Models
 {
     public class Exhibition
@@ -10,5 +8,6 @@ namespace Core.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Venue { get; set; } = null!;
+        public bool IsDeleted { get; set; } = false;
     }
 }
