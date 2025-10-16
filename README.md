@@ -1,22 +1,21 @@
 # Feith Blog: Full-Stack Application
 
-Welcome to the Feith Blog, a full-stack web application built with a .NET 8 backend and a Vue.js frontend. This project is designed to provide a modern, performant, and secure platform for artists to create and manage their blog posts.
+Welcome to the Feith Blog, a full-stack web application built with a .NET 8 backend. This project is designed to provide a modern, performant, and secure platform for users to register and log in.
 
 The application follows a clean architecture with a strong separation of concerns, uses JWT-based authentication, and leverages Entity Framework Core for data persistence.
 
 ## Features
 
-- **Full-Stack Solution:** A complete web application with a .NET backend and a Vue.js frontend.
 - **.NET 8 Backend:** Built on the latest long-term support version of .NET, providing a robust and scalable foundation.
-- **Vue.js Frontend:** A reactive and modern user interface for a seamless user experience.
-- **RESTful API:** A comprehensive set of API endpoints for managing blog posts.
-- **Authentication & Authorization:** Secure endpoints using JSON Web Tokens (JWT) to ensure that only authenticated artists can create or modify posts.
+- **RESTful API:** A comprehensive set of API endpoints for user authentication.
+- **Authentication & Authorization:** Secure endpoints using JSON Web Tokens (JWT) to ensure that only authenticated users can access protected resources.
 - **Entity Framework Core:** Data access is managed through EF Core with a SQLite database for local development.
+- **Repository Pattern:** The data access layer uses the repository pattern for a clean separation of concerns.
 - **Clean Architecture:** The solution is structured into distinct layers:
   - `Api`: The presentation layer, containing API controllers.
-  - `Business`: The application layer, holding business logic and services.
-  - `Core`: The domain layer, containing core entities, DTOs, and models.
-  - `Data`: The infrastructure layer, managing data access with EF Core.
+  - `Business`: Contains the repository implementations.
+  - `Core`: The domain layer, containing core entities, interfaces for repositories, and DTOs.
+  - `Data`: The infrastructure layer, managing the database context and migrations with EF Core.
 
 ## Getting Started
 
@@ -32,15 +31,13 @@ To run this project, you will need the **.NET 8 SDK**, which is pre-installed in
 
     Execute the following command in the terminal:
     ```bash
-    dotnet user-secrets set "Jwt:Key" "your-super-secret-key-that-is-long-and-secure-enough"
-    dotnet user-secrets set "Jwt:Issuer" "your-issuer"
-    dotnet user-secrets set "Jwt:Audience" "your-audience"
+    dotnet user-secrets set "AppSettings:Token" "your-super-secret-key-that-is-long-and-secure-enough"
     ```
-    *You can replace the example values with your own secure key, issuer, and audience.*
+    *You can replace the example value with your own secure key.*
 
 2.  **Run the Dev Server**
 
-    To start both the backend and frontend, simply run the following command:
+    To start the backend, simply run the following command:
     ```bash
     dotnet watch
     ```
@@ -48,5 +45,29 @@ To run this project, you will need the **.NET 8 SDK**, which is pre-installed in
 
 3.  **Access the Application**
 
-    Once the server is running, the web application will be available in the **Web Preview** tab in your IDE. You can access it directly to view and interact with the blog.
+    Once the server is running, the API will be available. You can use tools like Swagger, available at `/swagger` in the web preview, to interact with the API endpoints.
 
+## Database Management
+
+This project uses **Entity Framework Core** to manage the database schema through migrations.
+
+### Migrations Folder
+
+The `Data/Migrations` folder is intentionally excluded from source control via the `.gitignore` file. This is a common practice to prevent conflicts between developers' local database schemas. Each developer is responsible for creating and managing their own local database.
+
+### Creating and Applying Migrations
+
+When you make changes to the entity models in the `Core` project (e.g., the `User` model), you will need to create a new migration and apply it to your database.
+
+1.  **Create a Migration:**
+    Use the following command to create a migration. The `--project Data` flag is necessary because the `DbContext` is in a different project than the startup project.
+    ```bash
+    dotnet ef migrations add InitialCreate --project Data
+    ```
+    Replace `InitialCreate` with a descriptive name for your migration.
+
+2.  **Apply the Migration:**
+    This command applies any pending migrations to your database, creating or updating the schema.
+    ```bash
+    dotnet ef database update
+    ```

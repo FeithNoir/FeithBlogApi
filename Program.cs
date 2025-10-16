@@ -5,10 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-
-//I will add the services classes here
-using Business;
-using Business.Services;
+using Core.Interfaces;
+using Business.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,11 +63,7 @@ else
 }
 
 // Register repositories and services
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<ArtistService>();
-builder.Services.AddScoped<ArtworkService>();
-builder.Services.AddScoped<ExhibitionService>();
-builder.Services.AddScoped<PostService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
