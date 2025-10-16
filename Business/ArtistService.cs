@@ -32,7 +32,7 @@ namespace Business
                 .ToListAsync();
         }
 
-        public async Task<ArtistDto> GetArtist(int id)
+        public async Task<ArtistDto?> GetArtist(int id)
         {
             var artist = await _context.Artists.FindAsync(id);
 

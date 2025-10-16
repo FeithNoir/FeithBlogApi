@@ -33,7 +33,7 @@ namespace Business
                 .ToListAsync();
         }
 
-        public async Task<ExhibitionDto> GetExhibition(int id)
+        public async Task<ExhibitionDto?> GetExhibition(int id)
         {
             var exhibition = await _context.Exhibitions.FindAsync(id);
 

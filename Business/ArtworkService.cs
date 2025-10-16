@@ -33,7 +33,7 @@ namespace Business
                 .ToListAsync();
         }
 
-        public async Task<ArtworkDto> GetArtwork(int id)
+        public async Task<ArtworkDto?> GetArtwork(int id)
         {
             var artwork = await _context.Artworks.FindAsync(id);
 

@@ -32,7 +32,7 @@ namespace Business
                 .ToListAsync();
         }
 
-        public async Task<PostDto> GetPost(int id)
+        public async Task<PostDto?> GetPost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
 
