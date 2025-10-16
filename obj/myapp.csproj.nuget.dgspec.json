@@ -17,14 +17,14 @@
           "/home/user/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -37,42 +37,41 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "FirebaseDatabase.net": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[4.2.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[9.0.10, )"
+              "version": "[8.0.6, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
@@ -94,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/nix/store/3hhkyi53ky9qwjj9vjzg0pyq333vlrla-dotnet-sdk-9.0.203/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/nix/store/h4nvjwvcdzkp20lsd28yl6mb28hia7zg-dotnet-sdk-8.0.408/share/dotnet/sdk/8.0.408/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
