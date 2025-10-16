@@ -1,24 +1,3 @@
-# Ignore Visual Studio temporary files, build results, and caches
+# B-gen files
 [Bb]in/
 [Oo]bj/
-.vs/
-.vscode/
-
-# Ignore other potentially sensitive files
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-# Ignore generated files
-*.db
-*.sqlite
-app.db
-
-# Ignore local configuration files
-appsettings.Development.json
-secrets.json
-
-# Ignore Rider files
-.idea/
-*.iml

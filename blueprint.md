@@ -1,57 +1,45 @@
-# Feith Artist Blog Blueprint
-
-## Overview
-
-This project is a full-stack web application for an artist's blog and portfolio. It is built using ASP.NET Core MVC, Entity Framework Core, and SQLite. The application will allow the artist to showcase their work, write blog posts, and announce exhibitions.
-
-## Project Outline
-
-### Technologies
-
-*   **Backend:** ASP.NET Core MVC
-*   **Database:** SQLite (Development), PostgreSQL (Production - Recommended)
-*   **ORM:** Entity Framework Core
-*   **Frontend:** Razor Pages
-*   **API Documentation:** Swagger (OpenAPI)
-*   **Authentication:** JWT
+### Overview
+This project is a .NET Core Web API for a blog. It includes authentication with JWT and will eventually have endpoints for managing blog posts, artists, artworks, and exhibitions.
 
 ### Project Structure
+*   `Api/Controllers`: Contains API controllers.
+*   `Business/Repositories`: Contains data access logic.
+*   `Core/Models`: Contains data models and DTOs.
+*   `Data`: Contains the Entity Framework Core `DbContext` and migrations.
+*   `Views`: Contains Razor views (for potential future web UI).
+*   `wwwroot`: Contains static assets.
 
-*   `feithblogapi.csproj`: The main project file.
-*   `Program.cs`: The application's entry point, where services are configured.
-*   `appsettings.json`: Configuration file for the application.
-*   `Controllers/`: Contains the MVC controllers for handling web requests.
-*   `Models/`: Contains the data models (POCOs) for the application.
-*   `Views/`: Contains the Razor views for the application.
-*   `Data/`: Contains the `BlogContext` for interacting with the database.
-*   `Business/`: Contains the business logic services.
-*   `Core/`: Contains core entities and DTOs.
+### Implemented Features & Design
+*   **Authentication:**
+    *   JWT-based authentication.
+    *   `AuthController` with `register` and `login` endpoints.
+    *   `AuthRepository` for user registration and login logic.
+    *   Password hashing using HMACSHA512.
+*   **Database:**
+    *   Entity Framework Core with SQLite for local development.
+    *   `BlogContext` as the `DbContext`.
+*   **API:**
+    *   Swagger/OpenAPI documentation.
+    *   CORS enabled to allow all origins.
 
-## Current Change: API Implementation and Core Features
+### Current Task: Initial Setup and Authentication
 
-### Plan
-
-1.  **Add Swagger for API Documentation:**
-    *   Install the `Swashbuckle.AspNetCore` NuGet package.
-    *   Configure Swagger in `Program.cs` to generate API documentation.
-
-2.  **Implement Authentication with JWT:**
-    *   Create a `User` model for user registration and login.
-    *   Add the `User` model to the `BlogContext` and create a database migration.
-    *   Create an `AuthController` with `Register` and `Login` endpoints.
-    *   Generate a JWT upon successful login.
-    *   Configure JWT authentication in `Program.cs`.
-
-3.  **Create API Controllers:**
-    *   Create API controllers for `Artists`, `Artworks`, `Posts`, and `Exhibitions`.
-    *   Implement GET, POST, PUT, and DELETE endpoints for each resource.
-    *   Use the existing services from the `Business` layer.
-    *   Add `SemaphoreSlim` to service methods to ensure thread safety.
-
-4.  **Create Basic Frontend with Razor Pages:**
-    *   Create Razor Pages to display lists of artists, artworks, posts, and exhibitions.
-    *   Create pages for viewing individual items.
-
-5.  **Configure Production Database (PostgreSQL):**
-    *   Add the `Npgsql.EntityFrameworkCore.PostgreSQL` NuGet package.
-    *   Configure the application to use PostgreSQL in the production environment and SQLite in development. This provides a more robust and scalable database solution for production. There is no official Entity Framework Core provider for Firebase, so PostgreSQL is a recommended alternative.
+**Plan:**
+1.  **DONE** Install NuGet packages:
+    *   `FirebaseDatabase.net`
+    *   `Microsoft.AspNetCore.Authentication.JwtBearer`
+    *   `Swashbuckle.AspNetCore` (already installed)
+2.  **DONE** Configure `Program.cs`:
+    *   Add JWT authentication.
+    *   Add Swagger configuration for JWT.
+    *   Add CORS policy.
+    *   Add Firebase configuration placeholder.
+3.  **DONE** Configure `appsettings.json`:
+    *   Add `AppSettings:Token` for the JWT secret key.
+    *   Add `Firebase` configuration section.
+4.  **DONE** Create `AuthController.cs` in `Api/Controllers`.
+5.  **DONE** Update `IAuthRepository.cs` and `AuthRepository.cs`.
+    *   Implement `Register` and `Login` methods with `ServiceResponse`.
+    *   Implement JWT generation.
+6.  **DONE** Create `ServiceResponse.cs` model.
+7.  **DONE** Create and update `blueprint.md`.

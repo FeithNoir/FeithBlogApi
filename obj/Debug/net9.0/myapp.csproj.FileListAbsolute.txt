@@ -162,3 +162,15 @@
 /home/user/feithblogapi/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /home/user/feithblogapi/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /home/user/feithblogapi/obj/Debug/net9.0/myapp.MvcApplicationPartsAssemblyInfo.cs
+/home/user/feithblogapi/bin/Debug/net9.0/Firebase.dll
+/home/user/feithblogapi/bin/Debug/net9.0/LiteDB.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/home/user/feithblogapi/bin/Debug/net9.0/Newtonsoft.Json.dll
+/home/user/feithblogapi/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/home/user/feithblogapi/bin/Debug/net9.0/System.Reactive.dll
